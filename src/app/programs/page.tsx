@@ -32,6 +32,7 @@ import {
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from "next/link";
 
 
 const nsqfPrograms = [
@@ -81,33 +82,43 @@ export default function ProgramsPage() {
         <SidebarContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard" tooltip="Dashboard">
-                <LayoutDashboard />
-                Dashboard
+              <SidebarMenuButton asChild tooltip="Dashboard">
+                <Link href="/dashboard">
+                    <LayoutDashboard />
+                    Dashboard
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton href="/jobs" tooltip="Job Insights">
-                <Briefcase />
-                Job Insights
+              <SidebarMenuButton asChild tooltip="Job Insights">
+                 <Link href="/jobs">
+                    <Briefcase />
+                    Job Insights
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton href="/programs" isActive tooltip="Programs">
-                <BookOpen />
-                NSQF Programs
+              <SidebarMenuButton asChild isActive tooltip="Programs">
+                <Link href="/programs">
+                    <BookOpen />
+                    NSQF Programs
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton href="/profile" tooltip="Profile">
-                <User />
-                Profile
+              <SidebarMenuButton asChild tooltip="Profile">
+                <Link href="/profile">
+                    <User />
+                    Profile
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton href="/settings" tooltip="Settings">
-                <Settings />
-                Settings
+              <SidebarMenuButton asChild tooltip="Settings">
+                <Link href="/settings">
+                    <Settings />
+                    Settings
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

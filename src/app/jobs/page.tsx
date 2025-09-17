@@ -38,6 +38,7 @@ import { useToast } from "@/hooks/use-toast";
 import type { GetJobMarketInsightsOutput } from "@/ai/flows/get-job-market-insights";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 
 const formSchema = z.object({
@@ -172,33 +173,43 @@ export default function JobsPage() {
         <SidebarContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard" tooltip="Dashboard">
-                <LayoutDashboard />
-                Dashboard
+              <SidebarMenuButton asChild tooltip="Dashboard">
+                 <Link href="/dashboard">
+                    <LayoutDashboard />
+                    Dashboard
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton href="/jobs" isActive tooltip="Job Insights">
-                <Briefcase />
-                Job Insights
+              <SidebarMenuButton asChild isActive tooltip="Job Insights">
+                <Link href="/jobs">
+                    <Briefcase />
+                    Job Insights
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton href="/programs" tooltip="Programs">
-                <BookOpen />
-                NSQF Programs
+              <SidebarMenuButton asChild tooltip="Programs">
+                <Link href="/programs">
+                    <BookOpen />
+                    NSQF Programs
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton href="/profile" tooltip="Profile">
-                <User />
-                Profile
+              <SidebarMenuButton asChild tooltip="Profile">
+                <Link href="/profile">
+                    <User />
+                    Profile
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton href="/settings" tooltip="Settings">
-                <Settings />
-                Settings
+              <SidebarMenuButton asChild tooltip="Settings">
+                <Link href="/settings">
+                    <Settings />
+                    Settings
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
