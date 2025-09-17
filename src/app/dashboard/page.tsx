@@ -26,6 +26,7 @@ import {
   Loader2,
   Sparkles,
   BookOpen,
+  LogOut
 } from "lucide-react";
 import { LearnerProfileForm, FormSchema } from "@/components/dashboard/learner-profile-form";
 import { generatePathwaysAction } from "@/app/actions";
@@ -128,13 +129,13 @@ export default function DashboardPage() {
             </SidebarMenuItem>
              <SidebarMenuItem>
                 <Button variant="ghost" onClick={signOut} className="w-full justify-start">
-                    <LifeBuoy className="mr-2" /> Sign Out
+                    <LogOut className="mr-2" /> Sign Out
                 </Button>
             </SidebarMenuItem>
           </SidebarMenu>
           <div className="flex items-center gap-3 p-2">
             <Avatar>
-              <AvatarImage src={user.photoURL ?? "https://picsum.photos/seed/1/40/40"} alt="User" />
+              <AvatarImage src={user.photoURL ?? ""} alt="User" />
               <AvatarFallback>{user.displayName?.[0] ?? 'U'}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col text-sm group-data-[collapsible=icon]:hidden">
