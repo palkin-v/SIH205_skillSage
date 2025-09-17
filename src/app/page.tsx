@@ -19,6 +19,7 @@ export default function LoginPage() {
   const [email, setEmail] = React.useState("");
 
   React.useEffect(() => {
+    // If done loading and a user exists, redirect to dashboard.
     if (!loading && user) {
       router.push("/dashboard");
     }
@@ -36,31 +37,34 @@ export default function LoginPage() {
       return;
     }
     
-    try {
-      signIn({ displayName: name, email });
-      toast({
-        title: "Login Successful",
-        description: "Redirecting you to the dashboard...",
-      });
-      router.push("/dashboard");
-    } catch (error: any) {
-      console.error("Error signing in:", error);
-      toast({
-        variant: "destructive",
-        title: "Sign-in Failed",
-        description: error.message || "An unknown error occurred during sign-in.",
-      });
-    }
+    signIn({ displayName: name, email });
+    toast({
+      title: "Login Successful",
+      description: "Redirecting you to the dashboard...",
+    });
+    // The useEffect will handle the redirect once the user state is updated.
   };
 
-  if (loading || user) {
+  // While loading, show a spinner to prevent interaction or seeing a flash of the login page.
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <Loader2 className="w-12 h-12 animate-spin text-primary" />
       </div>
     );
   }
+  
+  // If not loading and there's a user, this component will be redirecting, 
+  // but we can show a spinner for a better UX.
+  if (user) {
+     return (
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+      </div>
+    );
+  }
 
+  // Only show the login form if not loading and no user is logged in.
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-secondary/50 p-4">
        <div className="absolute top-8 left-8">
