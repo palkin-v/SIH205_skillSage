@@ -10,13 +10,13 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
-export const GetJobMarketInsightsInputSchema = z.object({
+const GetJobMarketInsightsInputSchema = z.object({
   jobTitle: z.string().describe('The job title to get insights for. e.g., "Software Engineer"'),
 });
 export type GetJobMarketInsightsInput = z.infer<typeof GetJobMarketInsightsInputSchema>;
 
 
-export const GetJobMarketInsightsOutputSchema = z.object({
+const GetJobMarketInsightsOutputSchema = z.object({
   averageSalary: z.string().describe("The estimated average salary range for this role in a major market like the US or Europe."),
   requiredSkills: z.array(z.string()).describe("A list of key skills and technologies required for this job."),
   futureOutlook: z.string().describe("A brief summary of the future outlook and demand for this role."),
