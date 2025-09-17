@@ -4,11 +4,12 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, signO
 
 const firebaseConfig = {
   apiKey: "AIzaSyB0EyXBO_P22bvzsAInIO0dok1T3lvBbxw",
-  authDomain: "648345034330.firebaseapp.com",
-  projectId: "648345034330",
-  storageBucket: "648345034330.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  authDomain: "studio-4676698599-82985.firebaseapp.com",
+  projectId: "studio-4676698599-82985",
+  storageBucket: "studio-4676698599-82985.firebasestorage.app",
+  messagingSenderId: "236938280738",
+  appId: "1:236938280738:web:d65c4b24a150edb3562f7b"
+
 };
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
