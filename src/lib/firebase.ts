@@ -4,9 +4,9 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, signO
 
 const firebaseConfig = {
   apiKey: "AIzaSyB0EyXBO_P22bvzsAInIO0dok1T3lvBbxw",
-  authDomain: "4676698599.firebaseapp.com",
-  projectId: "4676698599",
-  storageBucket: "4676698599.appspot.com",
+  authDomain: "648345034330.firebaseapp.com",
+  projectId: "648345034330",
+  storageBucket: "648345034330.appspot.com",
   messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
   appId: "YOUR_APP_ID"
 };
