@@ -5,6 +5,7 @@ import {
   generatePersonalizedTrainingPathways,
   GeneratePersonalizedTrainingPathwaysInput,
 } from "@/ai/flows/generate-personalized-training-pathways";
+import { getJobMarketInsights } from "@/ai/flows/get-job-market-insights";
 import { revalidatePath } from "next/cache";
 
 const FormSchema = z.object({
@@ -46,11 +47,28 @@ export async function generatePathwaysAction(
        throw new Error("AI response is not in the expected format.");
     }
     
-    revalidatePath("/");
+    revalidatePath("/dashboard");
     return result;
 
   } catch (error) {
     console.error("Error calling AI flow:", error);
     throw new Error("Failed to generate personalized pathways. Please try again later.");
+  }
+}
+
+const JobInsightSchema = z.object({
+  jobTitle: z.string().min(3, { message: "Please enter a job title." }),
+});
+
+export async function getJobInsightsAction(values: z.infer<typeof JobInsightSchema>) {
+   try {
+    const result = await getJobMarketInsights({ jobTitle: values.jobTitle });
+    if (!result) {
+      throw new Error("AI response is not in the expected format.");
+    }
+    return result;
+  } catch (error) {
+    console.error("Error calling AI flow:", error);
+    throw new Error("Failed to generate job insights. Please try again later.");
   }
 }

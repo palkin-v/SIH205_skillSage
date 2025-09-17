@@ -58,13 +58,26 @@ export function LearnerProfileForm({ onSubmit, isLoading }: LearnerProfileFormPr
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Learner Profile</CardTitle>
-        <CardDescription>Tell us about yourself to get personalized recommendations.</CardDescription>
+        <CardTitle>Your Career Profile</CardTitle>
+        <CardDescription>Tell us about yourself to generate a personalized career roadmap.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+               <FormField
+                control={form.control}
+                name="aspirations"
+                render={({ field }) => (
+                  <FormItem className="md:col-span-2">
+                    <FormLabel>Career Aspirations</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="e.g., Aspiring to become a Data Scientist in the healthcare industry" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="academicBackground"
@@ -83,9 +96,9 @@ export function LearnerProfileForm({ onSubmit, isLoading }: LearnerProfileFormPr
                 name="priorSkills"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Prior Skills</FormLabel>
+                    <FormLabel>Prior Skills & Experience</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="e.g., Proficient in Python, basic knowledge of SQL" {...field} />
+                      <Textarea placeholder="e.g., Proficient in Python, 1 year of project management" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -96,23 +109,11 @@ export function LearnerProfileForm({ onSubmit, isLoading }: LearnerProfileFormPr
                 name="socioEconomicContext"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Socio-Economic Context</FormLabel>
+                    <FormLabel>Personal Context</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Describe your background to help us find suitable opportunities" {...field} />
+                      <Textarea placeholder="e.g., Looking for remote work, have family commitments" {...field} />
                     </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="aspirations"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Career Aspirations</FormLabel>
-                    <FormControl>
-                      <Textarea placeholder="e.g., Aspiring to become a Data Scientist in the healthcare industry" {...field} />
-                    </FormControl>
+                     <FormDescription>This helps us find suitable opportunities.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -132,13 +133,13 @@ export function LearnerProfileForm({ onSubmit, isLoading }: LearnerProfileFormPr
                 )}
               />
             </div>
-            <Button type="submit" disabled={isLoading} className="bg-accent hover:bg-accent/90 text-accent-foreground">
+            <Button type="submit" disabled={isLoading} className="bg-accent hover:bg-accent/90 text-accent-foreground px-8">
               {isLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (
                 <Sparkles className="mr-2 h-4 w-4" />
               )}
-              Generate Pathways
+              Generate My Pathways
             </Button>
           </form>
         </Form>

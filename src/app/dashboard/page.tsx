@@ -26,7 +26,8 @@ import {
   Loader2,
   Sparkles,
   BookOpen,
-  LogOut
+  LogOut,
+  Briefcase
 } from "lucide-react";
 import { LearnerProfileForm, FormSchema } from "@/components/dashboard/learner-profile-form";
 import { generatePathwaysAction } from "@/app/actions";
@@ -39,11 +40,25 @@ import { Logo } from "@/components/logo";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import type { Pathway } from "@/lib/types";
+
+function transformAiDataToPathways(data: GeneratePersonalizedTrainingPathwaysOutput): Pathway[] {
+  return data.trainingPathways.map((pathway, index) => ({
+    id: `pathway-${index}`,
+    courses: pathway.courses.map(name => ({ name, completed: false })),
+    microCredentials: pathway.microCredentials.map(name => ({ name, completed: false })),
+    certifications: pathway.certifications.map(name => ({ name, completed: false })),
+    onTheJobTraining: pathway.onTheJobTraining.map(name => ({ name, completed: false })),
+  }));
+}
+
 
 export default function DashboardPage() {
   const { user, loading, signOut } = useAuth();
   const router = useRouter();
-  const [pathwayData, setPathwayData] = React.useState<GeneratePersonalizedTrainingPathwaysOutput | null>(null);
+  const [aiData, setAiData] = React.useState<GeneratePersonalizedTrainingPathwaysOutput | null>(null);
+  const [pathways, setPathways] = React.useState<Pathway[] | null>(null);
+
   const [isLoading, setIsLoading] = React.useState(false);
   const { toast } = useToast();
 
@@ -56,10 +71,13 @@ export default function DashboardPage() {
 
   const handleFormSubmit = async (values: FormSchema) => {
     setIsLoading(true);
-    setPathwayData(null);
+    setAiData(null);
+    setPathways(null);
+
     try {
       const result = await generatePathwaysAction(values);
-      setPathwayData(result);
+      setAiData(result);
+      setPathways(transformAiDataToPathways(result));
       toast({
         title: "Pathways Generated",
         description: "Your personalized career pathways are ready.",
@@ -76,10 +94,21 @@ export default function DashboardPage() {
     }
   };
 
+  const handleToggleComplete = (pathwayIndex: number, itemType: keyof Omit<Pathway, 'id'>, itemIndex: number) => {
+    setPathways(prevPathways => {
+      if (!prevPathways) return null;
+      const newPathways = [...prevPathways];
+      const item = newPathways[pathwayIndex][itemType][itemIndex];
+      item.completed = !item.completed;
+      return newPathways;
+    });
+  };
+
+
   if (loading || !user) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="w-12 h-12 animate-spin" />
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <Loader2 className="w-12 h-12 animate-spin text-primary" />
       </div>
     );
   }
@@ -99,16 +128,22 @@ export default function DashboardPage() {
                 Dashboard
               </SidebarMenuButton>
             </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="/profile" tooltip="Profile">
-                <User />
-                Profile
+             <SidebarMenuItem>
+              <SidebarMenuButton href="/jobs" tooltip="Job Insights">
+                <Briefcase />
+                Job Insights
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
               <SidebarMenuButton href="/programs" tooltip="Programs">
                 <BookOpen />
                 NSQF Programs
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+             <SidebarMenuItem>
+              <SidebarMenuButton href="/profile" tooltip="Profile">
+                <User />
+                Profile
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
@@ -128,12 +163,12 @@ export default function DashboardPage() {
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-                <Button variant="ghost" onClick={signOut} className="w-full justify-start">
+                <Button variant="ghost" onClick={signOut} className="w-full justify-start text-sm">
                     <LogOut className="mr-2" /> Sign Out
                 </Button>
             </SidebarMenuItem>
           </SidebarMenu>
-          <div className="flex items-center gap-3 p-2">
+          <div className="flex items-center gap-3 p-2 border-t mt-2">
             <Avatar>
               <AvatarImage src={user.photoURL ?? ""} alt="User" />
               <AvatarFallback>{user.displayName?.[0] ?? 'U'}</AvatarFallback>
@@ -142,13 +177,13 @@ export default function DashboardPage() {
               <span className="font-semibold text-sidebar-foreground">
                 {user.displayName}
               </span>
-              <span className="text-sidebar-foreground/70">{user.email}</span>
+              <span className="text-xs text-sidebar-foreground/70">{user.email}</span>
             </div>
           </div>
         </SidebarFooter>
       </Sidebar>
-      <SidebarInset className="bg-background">
-        <main className="p-4 sm:p-6 lg:p-8 flex-1">
+      <SidebarInset>
+        <main className="p-4 sm:p-6 lg:p-8">
           <DashboardHeader />
           <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-3">
             <div className="lg:col-span-2">
@@ -156,28 +191,29 @@ export default function DashboardPage() {
               <div className="mt-8">
                 {isLoading && (
                   <div className="flex flex-col gap-4">
-                    <div className="flex items-center gap-2 text-lg font-semibold">
+                    <div className="flex items-center gap-2 text-lg font-semibold text-primary">
                       <Loader2 className="animate-spin" />
                       Generating your personalized pathways...
                     </div>
-                    <div className="space-y-4">
+                    <p className="text-muted-foreground">Our AI is analyzing your profile. This may take a moment.</p>
+                    <div className="space-y-4 pt-4">
                        <PathwayDisplay.Skeleton />
                     </div>
                   </div>
                 )}
-                {pathwayData ? (
-                  <PathwayDisplay data={pathwayData} />
+                {aiData && pathways ? (
+                  <PathwayDisplay data={aiData} pathways={pathways} onToggleComplete={handleToggleComplete} />
                 ) : !isLoading && (
-                   <div className="flex flex-col items-center justify-center text-center p-10 border-2 border-dashed rounded-lg">
+                   <div className="flex flex-col items-center justify-center text-center p-10 border-2 border-dashed rounded-lg bg-card mt-8">
                       <Sparkles className="w-12 h-12 text-muted-foreground mb-4" />
-                      <h3 className="text-xl font-semibold mb-2">Welcome to your Career Dashboard</h3>
-                      <p className="text-muted-foreground">Fill out your profile to generate personalized training pathways and unlock your potential.</p>
+                      <h3 className="text-xl font-semibold mb-2">Unlock Your Potential</h3>
+                      <p className="text-muted-foreground max-w-md">Fill out your profile form above, and our AI will generate a personalized roadmap to help you achieve your career goals.</p>
                    </div>
                 )}
               </div>
             </div>
             <div className="lg:col-span-1">
-              <ProgressTracker />
+              <ProgressTracker pathways={pathways} />
             </div>
           </div>
         </main>
