@@ -61,8 +61,8 @@ const InsightCard = ({ icon, title, children }: { icon: React.ReactNode, title: 
 
 const InsightsDisplay = ({ data }: { data: GetJobMarketInsightsOutput }) => (
   <div className="mt-8 space-y-6 animate-in fade-in-50">
-    <InsightCard icon={<DollarSign className="h-6 w-6 text-green-500" />} title="Average Salary">
-      <p className="text-2xl font-bold text-green-600">{data.averageSalary}</p>
+    <InsightCard icon={<DollarSign className="h-6 w-6 text-primary" />} title="Average Salary">
+      <p className="text-2xl font-bold text-primary">{data.averageSalary}</p>
       <p className="text-xs text-muted-foreground">Based on data from major international markets.</p>
     </InsightCard>
     <InsightCard icon={<Lightbulb className="h-6 w-6 text-yellow-500" />} title="Required Skills">
@@ -257,7 +257,7 @@ export default function JobsPage() {
                                 </FormItem>
                             )}
                             />
-                            <Button type="submit" disabled={isLoading} className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                            <Button type="submit" disabled={isLoading}>
                                {isLoading ? <Loader2 className="animate-spin" /> : <Wand2 />}
                                 <span className="ml-2 hidden sm:inline">Get Insights</span>
                             </Button>

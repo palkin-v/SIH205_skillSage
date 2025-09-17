@@ -133,7 +133,7 @@ export function LearnerProfileForm({ onSubmit, isLoading }: LearnerProfileFormPr
                 )}
               />
             </div>
-            <Button type="submit" disabled={isLoading} className="bg-accent hover:bg-accent/90 text-accent-foreground px-8">
+            <Button type="submit" disabled={isLoading} className="bg-primary hover:bg-primary/90 text-primary-foreground px-8">
               {isLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : (

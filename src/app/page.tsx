@@ -45,19 +45,9 @@ export default function LoginPage() {
     // The useEffect will handle the redirect once the user state is updated.
   };
 
-  // While loading, show a spinner to prevent interaction or seeing a flash of the login page.
-  if (loading) {
+  // While loading or if user exists (and redirecting), show a spinner.
+  if (loading || user) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
-        <Loader2 className="w-12 h-12 animate-spin text-primary" />
-      </div>
-    );
-  }
-  
-  // If not loading and there's a user, this component will be redirecting, 
-  // but we can show a spinner for a better UX.
-  if (user) {
-     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <Loader2 className="w-12 h-12 animate-spin text-primary" />
       </div>
