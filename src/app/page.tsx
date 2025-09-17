@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/use-auth";
+import { Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -24,9 +25,9 @@ export default function LoginPage() {
   }, [user, loading, router]);
 
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !email) {
+    if (!name.trim() || !email.trim()) {
       toast({
         variant: "destructive",
         title: "Missing Information",
@@ -51,6 +52,14 @@ export default function LoginPage() {
       });
     }
   };
+
+  if (loading || user) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-secondary/50 p-4">
@@ -82,7 +91,7 @@ export default function LoginPage() {
                 placeholder="e.g. jane.doe@example.com" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required 
+                required
               />
             </div>
             <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
@@ -91,9 +100,6 @@ export default function LoginPage() {
           </form>
         </CardContent>
       </Card>
-       <p className="text-xs text-muted-foreground mt-6">
-          A project by SkillSage | Your AI Career Navigator
-        </p>
     </div>
   );
 }
