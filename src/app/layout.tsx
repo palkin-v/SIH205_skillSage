@@ -4,6 +4,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { Inter as FontSans } from "next/font/google";
 import { cn } from '@/lib/utils';
 import { Analytics } from "@vercel/analytics/react"
+import { AuthProvider } from '@/providers/auth-provider';
 
 export const metadata: Metadata = {
   title: 'SkillSage',
@@ -26,7 +27,9 @@ export default function RootLayout({
         "min-h-screen bg-background font-sans antialiased",
         fontSans.variable
       )}>
+        <AuthProvider>
         {children}
+        </AuthProvider>
         <Toaster />
         <Analytics />
       </body>
